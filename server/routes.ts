@@ -24,5 +24,19 @@ export async function registerRoutes(
     }
   });
 
+  app.get(api.responses.list.path, async (req, res) => {
+    const token = req.query.token;
+    if (!process.env.ADMIN_SECRET || token !== process.env.ADMIN_SECRET) {
+      return res.status(401).json({ message: "Unauthorized. Please set and use the ADMIN_SECRET environment variable." });
+    }
+
+    try {
+      const responses = await storage.getResponses();
+      res.json(responses);
+    } catch (err) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   return httpServer;
 }
