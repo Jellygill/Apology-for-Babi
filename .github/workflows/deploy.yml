@@ -26,10 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build client only
-        run: npx vite build
+      - name: Build with pages config
+        run: npx vite build --config vite.pages.config.ts
         env:
           NODE_ENV: production
+
+      - name: List output (debug)
+        run: ls -la dist/public/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
