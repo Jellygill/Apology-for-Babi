@@ -4,6 +4,7 @@ import { Heart, SkipForward, Play, Pause, Music2, Volume2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import letterImage from "@assets/letter.png";
 
 const FORMSPREE_URL = "https://formspree.io/f/xbdabggo";
 
@@ -324,6 +325,7 @@ export default function Home() {
   const [address, setAddress] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [isLetterOpen, setIsLetterOpen] = useState(false);
   const { toast } = useToast();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -80]);
@@ -359,6 +361,34 @@ export default function Home() {
       <FloatingHeartOnClick />
       <MusicPlayer />
 
+      <AnimatePresence>
+        {isLetterOpen && (
+          <motion.div
+            key="letter-lightbox"
+            className="fixed inset-0 z-[9999] bg-black/45 backdrop-blur-sm flex items-center justify-center px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsLetterOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="max-w-3xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={letterImage}
+                alt="Handwritten apology letter for Babi"
+                className="w-full h-auto rounded-[32px] shadow-2xl shadow-rose-300/50 border border-white/70 bg-white object-contain touch-pan-y"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Scroll progress bar */}
       <motion.div className="fixed top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-pink-300 via-primary to-rose-400 origin-left z-50"
         style={{ scaleX: scrollYProgress }} />
@@ -366,24 +396,6 @@ export default function Home() {
       {/* ── 1. HERO ── */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10">
-
-          {/* My Melody peeking from bottom of hero */}
-          <motion.div
-            className="absolute -bottom-32 left-1/2 pointer-events-none"
-            style={{ translateX: "-50%" }}
-            initial={{ y: 60, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 2.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <motion.img
-              src="/Apology-for-Babi/assets/images/melody3.png"
-              alt="My Melody"
-              className="w-24 md:w-32 object-contain drop-shadow-lg"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-            />
-          </motion.div>
-
           <FadeIn delay={0.1}>
             <motion.p className="font-script text-xl md:text-2xl text-primary/70 mb-6 tracking-widest"
               initial={{ opacity: 0, letterSpacing: "0.5em" }} animate={{ opacity: 1, letterSpacing: "0.2em" }}
@@ -391,6 +403,21 @@ export default function Home() {
               a message, just for you
             </motion.p>
           </FadeIn>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-6 flex justify-center"
+          >
+            <motion.img
+              src="/Apology-for-Babi/assets/images/melody3.png"
+              alt="My Melody"
+              className="w-24 md:w-32 lg:w-36 object-contain drop-shadow-lg"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ repeat: Infinity, duration: 3.6, ease: "easeInOut" }}
+            />
+          </motion.div>
 
           <FadeIn delay={0.4}>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-medium text-foreground mb-6 glow-text">
@@ -419,15 +446,6 @@ export default function Home() {
             </motion.div>
           </FadeIn>
         </motion.div>
-
-        {/* Decorative corner melody */}
-        <motion.img
-          src="/Apology-for-Babi/assets/images/melody1.jpg"
-          alt=""
-          className="absolute bottom-8 right-4 md:right-12 w-16 md:w-24 rounded-full opacity-60 pointer-events-none"
-          animate={{ rotate: [-5, 5, -5], y: [0, -5, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-        />
       </section>
 
       {/* ── 2. BUILD-UP ── */}
@@ -465,25 +483,63 @@ export default function Home() {
               transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
             />
 
-            <div className="relative overflow-hidden mb-10">
-              <p className="font-sans text-primary/60 text-xs uppercase tracking-[0.4em]">Every word here is sincere</p>
-              <motion.div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent"
-                animate={{ x: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 3, ease: "linear", repeatDelay: 2 }} />
-            </div>
+            <div className="flex flex-col items-center">
+              <motion.button
+                type="button"
+                onClick={() => setIsLetterOpen(true)}
+                className="group relative mb-8 focus:outline-none"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.img
+                  src={letterImage}
+                  alt="A handwritten apology letter for Babi"
+                  className="w-full max-w-xl mx-auto rounded-[32px] shadow-xl shadow-rose-200/60 border border-white/70 bg-white object-contain"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </motion.button>
 
-            <div className="space-y-8 font-display text-lg md:text-2xl leading-loose text-foreground/90">
-              <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2 }}>
-                I've been thinking a lot about you lately. About the moments we share, the quiet understandings, and how much light you bring into my life.
-              </motion.p>
-              <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.5 }}>
-                Sometimes words on a screen aren't enough to capture how much I appreciate you. I wanted to create a little space, far away from the noise, just to remind you of that.
-              </motion.p>
-            </div>
+              <motion.div
+                className="max-w-2xl mx-auto text-center space-y-4 font-sans text-base md:text-lg leading-relaxed text-foreground/85"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.9, delay: 0.1 }}
+              >
+                <p className="text-primary/75 text-sm md:text-base tracking-[0.18em] uppercase">
+                  Every word on this page is for you
+                </p>
 
-            <motion.p className="mt-12 font-script text-2xl md:text-3xl text-primary/70 text-right"
-              initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.8 }}>
-              with lots of love ♥
-            </motion.p>
+                <p className="font-display text-lg md:text-xl text-foreground">
+                  Hello my Babi,
+                </p>
+
+                <p>
+                  I want to sincerely apologize for not being honest with you. I know my actions hurt you, and I am truly
+                  sorry for the pain and disappointment I caused.
+                </p>
+
+                <p>
+                  You are very important to me Babi, and it hurts me knowing that I became the reason for your sadness.
+                  You never deserved anything less than honesty and respect from me.
+                </p>
+
+                <p>
+                  I can’t change what happened babi, pero I still want you to know that I genuinely regret my mistake po
+                  and I am willing to do better. What we have means so much to me. I love you so much my cutiepie, my
+                  wifey, my constant, my babi, my Mary Iris!!!
+                </p>
+
+                <p className="font-display text-lg md:text-xl text-primary/85 mt-2">
+                  With all my heart,
+                  <br />
+                  Matty your Babi
+                </p>
+              </motion.div>
+            </div>
           </motion.div>
         </FadeIn>
       </section>
