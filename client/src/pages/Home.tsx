@@ -548,8 +548,8 @@ export default function Home() {
       <section className="relative min-h-[70vh] flex flex-col items-center justify-center px-6 py-24 gap-12 md:gap-20 text-center z-10">
         {[
           { text: "No excuses.", opacity: "text-foreground/60", delay: 0 },
-          { text: "Only honesty.", opacity: "text-foreground/80", delay: 0.15 },
-          { text: "Only you.", opacity: "text-foreground", delay: 0.3, italic: true },
+          { text: "Only my Babi.", opacity: "text-foreground/80", delay: 0.15 },
+          { text: "Always you.", opacity: "text-foreground", delay: 0.3, italic: true },
         ].map(({ text, opacity, delay, italic }) => (
           <motion.h2 key={text} className={`text-3xl md:text-6xl font-display ${opacity} ${italic ? "italic" : ""}`}
             initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
