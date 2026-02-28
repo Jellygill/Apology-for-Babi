@@ -643,9 +643,9 @@ export default function Home() {
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }}>
                         <img src="/Apology-for-Babi/assets/images/melody1.jpg" alt="My Melody" className="w-16 h-16 rounded-full mx-auto mb-6 object-cover ring-4 ring-primary/20" />
                         <p className="text-xl md:text-2xl font-display leading-relaxed text-foreground/90 mb-8">
-                          There's something I've been wanting to send you — something filled with love.{" "}
+                          There's something I've been wanting to send you that is filled with my love po.{" "}
                           <br /><br />
-                          If you're comfortable sharing it with me, may I know the address where I can send my little surprise?
+                          If you're comfortable sharing it with me, may I know the address where I can send my little surprise? Yung accurate location po for delivery hehe.
                           <br /><br />
                           <motion.span className="text-muted-foreground text-base italic"
                             animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 3 }}>
